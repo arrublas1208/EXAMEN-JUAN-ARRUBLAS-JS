@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/list.css">
+    <!-- <script src="current/list.js"></script> -->
+    <title>HOME</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="container1">
+            <br>
+            <h1>AGENDA</h1>
+            <div class="nav-items">
+                <div>`Bienvenido, ${usuarioActual.username}`</div>
+                <a href="#" onclick="mostraragenda()">
+                </a>
+                <br>
+                <button href="#" onclick="cerrarSesion()">Cerrar Sesión</button>
+            </div>
+        </div class="container1">
+        <div class="todo-app">
+            <div class="row">
+                <input type="text" id="input-box" placeholder="Ingresa tu compromiso">
+                <input type="text" id="input-box1" placeholder="Descripcion">
+                <input type="text" id="input-box2" placeholder="Ubicacion">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fechaInicio">Fecha de Inicio</label>
+                        <input type="date" id="fechaInicio" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fechaFin">Fecha de Finalización</label>
+                        <input type="date" id="fechaFin" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="horaInicio">Hora de Inicio</label>
+                        <input type="time" id="horaInicio" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="horaFin">Hora de Finalización</label>
+                        <input type="time" id="horaFin" required>
+                    </div>
+                </div>
+                <button onclick="AddTask()">Agregar</button>
+
+            </div>
+            
+            <h2>Compromisos Diarios</h2>
+            <hr>
+            <br>
+            <ul id="list-container">
+        </div>
+    </div>
+</body>
+<script>
+    const inputBox =  document.getElementById("input-box");
+    const inputBox1 =  document.getElementById("input-box1");
+    const inputBox2 =  document.getElementById("input-box2");
+    const listContainer =  document.getElementById("list-container");
+    const usuarioActual = JSON.parse(localStorage.getItem('currentUser'));
+    
+    function AddTask(){
+        if(inputBox.value === ''){
+            alert("Ingresa Un compromiso");
+    
+        }else {
+            let li = document.createElement("li")
+            li.innerHTML = inputBox.value;
+            li.innerHTML = inputBox1.value;
+            li.innerHTML = inputBox2.value;
+            listContainer.appendChild(li);
+            let span = document.createElement("span");
+            span.innerHTML = "\u00d7";
+            li.appendChild(span);
+        }
+        inputBox.value = "";
+        saveData();
+    }
+    
+    listContainer.addEventListener("click", function(e){
+        if(e.target.tagName === "LI"){
+            e.target.classList.toggle("checked");
+            saveData();
+        }
+        else if (e.target.tagName === "SPAN"){
+            e.target.parentElement.remove();
+            saveData();
+        }
+    }, false)
+    
+    function saveData(){
+        localStorage.setItem("data", listContainer.innerHTML);
+    }
+    
+    function showTask(){
+        listContainer.innerHTML = localStorage.getItem("data");
+    }
+    
+    showTask();
+    
+    
+    function mensaje(){
+        console.log("sirve")
+    }
+    
+    
+    function cerrarSesion() {
+        localStorage.removeItem('currentUser');
+        location.reload();
+        window.location.href = "index.html"
+    }</script>
+</html>
